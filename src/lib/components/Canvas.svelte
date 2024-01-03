@@ -19,6 +19,8 @@
 
 	function draw(time: DOMHighResTimeStamp) {
 		resizeGL(context);
+		context.clearColor(0.2, 0.3, 0.4, 1.0);
+		context.clear(context.COLOR_BUFFER_BIT);
 		handle = requestAnimationFrame(draw);
 	}
 </script>
