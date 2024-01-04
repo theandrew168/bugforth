@@ -7,9 +7,12 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"start": "node ./build/",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"test": "vitest run",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"format": "prettier --write ."
+	},
+	"dependencies": {
+		"gl-matrix": "^3.4.3"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-node": "^2.0.2",
