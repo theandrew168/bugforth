@@ -1,5 +1,10 @@
-app = "bugs"
-primary_region = "ord"
+# fly.toml app configuration file generated for bugs on 2024-04-04T17:53:51-05:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'bugs'
+primary_region = 'ord'
 
 [build]
 
@@ -9,9 +14,9 @@ primary_region = "ord"
   auto_stop_machines = true
   auto_start_machines = true
   min_machines_running = 0
-  processes = ["app"]
+  processes = ['app']
 
 [[vm]]
-  cpu_kind = "shared"
+  cpu_kind = 'shared'
   cpus = 1
   memory_mb = 256
