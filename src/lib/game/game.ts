@@ -37,7 +37,7 @@ export function NewGame(): Game {
 	const tileOptions: Tile[] = ["grass", "sand", "water"];
 	const tiles: Tile[] = [];
 	for (let i = 0; i < 81; i++) {
-		const tile = tileOptions[getRandomInt(tileOptions.length)];
+		const tile = tileOptions[getRandomInt(tileOptions.length)]!;
 		tiles.push(tile);
 	}
 

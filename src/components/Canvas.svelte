@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { onDestroy, onMount } from "svelte";
 
-	import { Renderer2D } from "$lib/gfx/renderer";
-	import { Sprite } from "$lib/gfx/sprite";
-	import { initGL, loadImage } from "$lib/gfx/utils";
-	import { NewGame, type Game, type Tile } from "$lib/game/game";
+	import { Renderer2D } from "../lib/gfx/renderer";
+	import { Sprite } from "../lib/gfx/sprite";
+	import { initGL, loadImage } from "../lib/gfx/utils";
+	import { NewGame, type Game, type Tile } from "../lib/game/game";
 
 	let game: Game;
 	let canvas: HTMLCanvasElement;
@@ -52,7 +52,7 @@
 			for (let x = 0; x < game.world.width; x++) {
 				// row-major indexing
 				const tileIndex = y * game.world.width + x;
-				const tile = game.world.tiles[tileIndex];
+				const tile = game.world.tiles[tileIndex]!;
 				const tileSprite = tileSprites[tile];
 				renderer.draw(tileSprite, {
 					x: (x - halfWorldWidth) * tileSprite.width * tileScale,
