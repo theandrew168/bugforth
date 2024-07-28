@@ -1,6 +1,6 @@
-# bugs
+# bugforth
 
-Programmable bugs on a hexagonal grid
+Programmable bugs... go Forth!
 
 ## Local Development
 
