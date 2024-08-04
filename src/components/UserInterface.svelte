@@ -1,12 +1,16 @@
 <script>
 	import { step } from "../lib/game";
 	import { GameState } from "../lib/state";
+
+	function onStep() {
+		$GameState = step($GameState);
+	}
 </script>
 
 <div class="overlay">
 	<textarea bind:value={$GameState.bug.program.code} rows="10" cols="30"></textarea>
 	<button on:click={() => console.log("Button 1")}>Compile</button>
-	<button on:click={() => ($GameState = step($GameState))}>Step</button>
+	<button on:click={onStep}>Step</button>
 </div>
 
 <style>
