@@ -56,7 +56,7 @@ export function NewGame(): Game {
 			},
 			program: {
 				pc: 0,
-				code: ": WORD FOO BAR ;",
+				code: "up right down left",
 				words: ["forward", "right", "forward", "right", "forward", "right", "forward", "right"],
 			},
 		},

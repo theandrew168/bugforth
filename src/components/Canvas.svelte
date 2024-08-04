@@ -5,7 +5,7 @@
 	import { Sprite } from "../lib/gfx/sprite";
 	import { initGL, loadImage } from "../lib/gfx/utils";
 	import type { Tile } from "../lib/game";
-	import { GameState } from "../lib/store";
+	import { GameState } from "../lib/state";
 
 	let canvas: HTMLCanvasElement;
 	let gl: WebGL2RenderingContext;
