@@ -63,3 +63,33 @@ export function NewGame(): Game {
 	};
 	return game;
 }
+
+export function step(game: Game): Game {
+	const program = game.bug.program;
+	const words = program.code.split(/\s+/);
+	const word = words[program.pc];
+
+	// Clone the game state for updating
+	const newGame = structuredClone(game);
+
+	// Handle the current word
+	switch (word) {
+		case "up":
+			newGame.bug.position.y += 1;
+			break;
+		case "down":
+			newGame.bug.position.y -= 1;
+			break;
+		case "left":
+			newGame.bug.position.x -= 1;
+			break;
+		case "right":
+			newGame.bug.position.x += 1;
+			break;
+	}
+
+	// Increment the program counter (with wrap-aroudn)
+	newGame.bug.program.pc = (program.pc + 1) % words.length;
+
+	return newGame;
+}

@@ -1,11 +1,12 @@
 <script>
+	import { step } from "../lib/game";
 	import { GameState } from "../lib/state";
 </script>
 
 <div class="overlay">
-	<button on:click={() => console.log("Button 1")}>Button</button>
-	<button on:click={() => console.log("Button 2")}>Button</button>
-	<textarea bind:value={$GameState.bug.program.code}></textarea>
+	<textarea bind:value={$GameState.bug.program.code} rows="10" cols="30"></textarea>
+	<button on:click={() => console.log("Button 1")}>Compile</button>
+	<button on:click={() => ($GameState = step($GameState))}>Step</button>
 </div>
 
 <style>
@@ -18,14 +19,15 @@
 		border: 1px solid white;
 		background-color: black;
 		color: white;
-		display: block;
 		padding: 1rem;
 		margin: 0.5rem;
+		width: 6rem;
 	}
 	button:hover {
 		cursor: pointer;
 	}
 	textarea {
+		display: block;
 		margin: 0.5rem;
 	}
 </style>
