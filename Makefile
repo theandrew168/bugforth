@@ -7,8 +7,12 @@ default: build
 node_modules:
 	npm install
 
+.PHONY: check
+check: node_modules
+	npm run check
+
 .PHONY: build
-build: node_modules
+build: node_modules check
 	npm run build
 
 .PHONY: run

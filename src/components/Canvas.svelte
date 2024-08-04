@@ -4,17 +4,15 @@
 	import { Renderer2D } from "../lib/gfx/renderer";
 	import { Sprite } from "../lib/gfx/sprite";
 	import { initGL, loadImage } from "../lib/gfx/utils";
-	import { NewGame, type Game, type Tile } from "../lib/game/game";
+	import type { Tile } from "../lib/game";
+	import { GameState } from "../lib/store";
 
-	let game: Game;
 	let canvas: HTMLCanvasElement;
 	let gl: WebGL2RenderingContext;
 	let renderer: Renderer2D;
 	let frame: number;
 
 	onMount(async () => {
-		game = NewGame();
-
 		gl = initGL(canvas);
 
 		const spritesheet = await loadImage("/img/hex.png", true);
@@ -46,13 +44,13 @@
 		// make tiles 4x larger
 		const tileScale = 4;
 
-		const halfWorldWidth = (game.world.width - 1) / 2;
-		const halfWorldHeight = (game.world.height - 1) / 2;
-		for (let y = 0; y < game.world.height; y++) {
-			for (let x = 0; x < game.world.width; x++) {
+		const halfWorldWidth = ($GameState.world.width - 1) / 2;
+		const halfWorldHeight = ($GameState.world.height - 1) / 2;
+		for (let y = 0; y < $GameState.world.height; y++) {
+			for (let x = 0; x < $GameState.world.width; x++) {
 				// row-major indexing
-				const tileIndex = y * game.world.width + x;
-				const tile = game.world.tiles[tileIndex]!;
+				const tileIndex = y * $GameState.world.width + x;
+				const tile = $GameState.world.tiles[tileIndex]!;
 				const tileSprite = tileSprites[tile];
 				renderer.draw(tileSprite, {
 					x: (x - halfWorldWidth) * tileSprite.width * tileScale,
@@ -67,7 +65,7 @@
 		const bugScale = 3;
 
 		// bug
-		const bug = game.bug;
+		const bug = $GameState.bug;
 		renderer.draw(bugSprite, {
 			x: bug.position.x * bugSprite.width * 4,
 			y: bug.position.y * bugSprite.height * 4,

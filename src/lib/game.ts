@@ -7,6 +7,7 @@ export type Position = {
 export type Word = "forward" | "right" | "left";
 export type Program = {
 	pc: number;
+	code: string;
 	words: Word[];
 };
 
@@ -55,6 +56,7 @@ export function NewGame(): Game {
 			},
 			program: {
 				pc: 0,
+				code: ": WORD FOO BAR ;",
 				words: ["forward", "right", "forward", "right", "forward", "right", "forward", "right"],
 			},
 		},

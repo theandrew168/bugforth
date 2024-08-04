@@ -1,6 +1,11 @@
+<script>
+	import { GameState } from "../lib/state";
+</script>
+
 <div class="overlay">
 	<button on:click={() => console.log("Button 1")}>Button</button>
 	<button on:click={() => console.log("Button 2")}>Button</button>
+	<textarea bind:value={$GameState.bug.program.code}></textarea>
 </div>
 
 <style>
@@ -19,5 +24,8 @@
 	}
 	button:hover {
 		cursor: pointer;
+	}
+	textarea {
+		margin: 0.5rem;
 	}
 </style>
