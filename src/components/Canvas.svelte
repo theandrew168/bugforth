@@ -5,7 +5,7 @@
 	import { Sprite } from "../lib/gfx/sprite";
 	import { initGL, loadImage } from "../lib/gfx/utils";
 	import type { Tile } from "../lib/game";
-	import { GameState } from "../lib/state";
+	import { GameState, update } from "../lib/state";
 
 	let canvas: HTMLCanvasElement;
 	let gl: WebGL2RenderingContext;
@@ -19,7 +19,7 @@
 		renderer = new Renderer2D(canvas, gl, spritesheet);
 		renderer.flush();
 
-		frame = requestAnimationFrame(draw);
+		frame = requestAnimationFrame(loop);
 	});
 
 	onDestroy(() => {
@@ -28,7 +28,7 @@
 		}
 	});
 
-	function draw(time: DOMHighResTimeStamp) {
+	function render(time: DOMHighResTimeStamp) {
 		const spritesheet = new Sprite(64, 64);
 		const grassSprite = spritesheet.slice(16, 16, 0, 1);
 		const sandSprite = spritesheet.slice(16, 16, 1, 1);
@@ -74,8 +74,13 @@
 		});
 
 		renderer.flush();
+	}
 
-		frame = requestAnimationFrame(draw);
+	function loop(time: DOMHighResTimeStamp) {
+		update(time);
+		render(time);
+
+		frame = requestAnimationFrame(loop);
 	}
 </script>
 

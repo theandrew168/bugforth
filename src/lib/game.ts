@@ -4,11 +4,9 @@ export type Position = {
 	y: number;
 };
 
-export type Word = "forward" | "right" | "left";
 export type Program = {
 	pc: number;
 	code: string;
-	words: Word[];
 };
 
 export type Bug = {
@@ -26,6 +24,9 @@ export type World = {
 };
 
 export type Game = {
+	running: boolean;
+	prev: DOMHighResTimeStamp;
+	time: DOMHighResTimeStamp;
 	world: World;
 	bug: Bug;
 };
@@ -42,7 +43,11 @@ export function NewGame(): Game {
 		tiles.push(tile);
 	}
 
+	const now = performance.now();
 	const game: Game = {
+		running: false,
+		prev: now,
+		time: now,
 		world: {
 			width: 9,
 			height: 9,
@@ -57,20 +62,31 @@ export function NewGame(): Game {
 			program: {
 				pc: 0,
 				code: "up right down left",
-				words: ["forward", "right", "forward", "right", "forward", "right", "forward", "right"],
 			},
 		},
 	};
 	return game;
 }
 
-export function step(game: Game): Game {
+export function step(game: Game, time: DOMHighResTimeStamp): Game {
+	// Clone the game state for updating
+	const newGame = structuredClone(game);
+	newGame.time = time;
+	if (!newGame.running) {
+		return newGame;
+	}
+
+	// Only update the bug's code every 100ms.
+	const dt = newGame.time - newGame.prev;
+	if (dt < 100) {
+		return newGame;
+	}
+
+	newGame.prev = newGame.time;
+
 	const program = game.bug.program;
 	const words = program.code.split(/\s+/);
 	const word = words[program.pc];
-
-	// Clone the game state for updating
-	const newGame = structuredClone(game);
 
 	// Handle the current word
 	switch (word) {
@@ -88,7 +104,7 @@ export function step(game: Game): Game {
 			break;
 	}
 
-	// Increment the program counter (with wrap-aroudn)
+	// Increment the program counter (with wrap-around)
 	newGame.bug.program.pc = (program.pc + 1) % words.length;
 
 	return newGame;
