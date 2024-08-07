@@ -5,18 +5,45 @@ import { Shader } from "./shader";
 import { Texture } from "./texture";
 import type { Sprite } from "./sprite";
 
+/**
+ * Size (in bytes). of a floating-point number.
+ */
 const FLOAT_SIZE = 4;
+/**
+ * Number of floats per vertex (2 for position, 2 for texcoords).
+ */
 const FLOATS_PER_VERTEX = 4;
+/**
+ * Size (in bytes) of a single vertex.
+ */
 const VERTEX_SIZE = FLOAT_SIZE * FLOATS_PER_VERTEX;
 
+/**
+ * Maximum number of sprites able to be drawn per batch (for one frame).
+ */
 const MAX_SPRITE_COUNT = 1000;
 
+/**
+ * Number of vertices per sprite (4 corners).
+ */
 const VERTICES_PER_SPRITE = 4;
+/**
+ * Maximum number of vertices supported per batch (for one frame).
+ */
 const MAX_VERTEX_COUNT = MAX_SPRITE_COUNT * VERTICES_PER_SPRITE;
 
+/**
+ * Number of indices per sprite (2 triangles, 3 indices per triangle).
+ */
 const INDICES_PER_SPRITE = 6;
+/**
+ * Maximum number of indices supported per batch (for one frame).
+ */
 const MAX_INDEX_COUNT = MAX_SPRITE_COUNT * INDICES_PER_SPRITE;
 
+/**
+ * Vertex shader source for 2D sprite rendering.
+ */
 const VERTEX_SHADER = `
 #version 300 es
 
@@ -33,6 +60,9 @@ void main() {
 }
 `;
 
+/**
+ * Fragment shader source for 2D sprite rendering.
+ */
 const FRAGMENT_SHADER = `
 #version 300 es
 precision highp float;
@@ -48,14 +78,36 @@ void main() {
 }
 `;
 
+/**
+ * Parameters for drawing a single sprite. Sprites are drawn with
+ * their centers located at (x, y).
+ */
 export type DrawParams = {
+	/**
+	 * X position (in pixels) to draw the sprite.
+	 */
 	x: number;
+	/**
+	 * Y position (in pixels) to draw the sprite.
+	 */
 	y: number;
+	/**
+	 * X-axis scaling multiplier.
+	 */
 	sx?: number;
+	/**
+	 * Y-axis scaling multiplier.
+	 */
 	sy?: number;
+	/**
+	 * Sprite rotation in degrees (CCW).
+	 */
 	r?: number;
 };
 
+/**
+ * An efficient, 2D batch renderer for drawing sprites from a spritesheet.
+ */
 export class Renderer2D {
 	private canvas: HTMLCanvasElement;
 	private gl: WebGL2RenderingContext;
@@ -69,6 +121,12 @@ export class Renderer2D {
 	private buffer: Float32Array;
 	private texture: Texture;
 
+	/**
+	 * Initialze the renderer and it's shader, buffers, and vertex array.
+	 * @param canvas HTML canvas element.
+	 * @param gl Active WebGL context.
+	 * @param spritesheet Image containing all of the game's sprites.
+	 */
 	constructor(canvas: HTMLCanvasElement, gl: WebGL2RenderingContext, spritesheet: ImageBitmap) {
 		this.canvas = canvas;
 		this.gl = gl;
@@ -117,6 +175,11 @@ export class Renderer2D {
 		this.texture = new Texture(gl, spritesheet);
 	}
 
+	/**
+	 * Submit a sprite for drawing as part of the current batch.
+	 * @param sprite Sprite to be submitted for drawing.
+	 * @param DrawParams Position, scaling, and rotation values.
+	 */
 	public draw(sprite: Sprite, { x, y, sx = 1, sy = 1, r = 0 }: DrawParams) {
 		const halfWidth = sprite.width / 2.0;
 		const halfHeight = sprite.height / 2.0;
@@ -126,6 +189,8 @@ export class Renderer2D {
 		const cosRot = Math.cos(radians);
 
 		const index = this.count * FLOATS_PER_VERTEX * VERTICES_PER_SPRITE;
+
+		// For each index, manually compute translation, scaling, and rotation.
 
 		// bottom-left
 		this.buffer[index + 0] = cosRot * -halfWidth * sx - sinRot * -halfHeight * sy + x;
@@ -161,6 +226,10 @@ export class Renderer2D {
 		this.count += 1;
 	}
 
+	/**
+	 * Flush the current batch of sprites, drawing them all to the screen
+	 * at once in a single drawElements call.
+	 */
 	public flush() {
 		resizeGL(this.gl);
 		this.gl.clearColor(0.2, 0.3, 0.4, 1.0);

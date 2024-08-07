@@ -1,21 +1,45 @@
+/**
+ * A specific direction / orientation.
+ */
 export type Direction = "n" | "e" | "s" | "w";
+
+/**
+ * A position in 2D space.
+ */
 export type Position = {
 	x: number;
 	y: number;
 };
 
+/**
+ * A program with code and a program counter (pc) that points to
+ * what instruction the execution is going to run next (wraps around).
+ */
 export type Program = {
 	pc: number;
 	code: string;
 };
 
+/**
+ * A bug in the world: complete with a direction, position, and program.
+ */
 export type Bug = {
 	direction: Direction;
 	position: Position;
 	program: Program;
 };
 
+/**
+ * A type of ground tile.
+ */
 export type Tile = "grass" | "sand" | "water";
+
+/**
+ * A world / map with a width, height, and array of tiles.
+ *
+ * The tiles use row-major indexing:
+ * `get(x, y) => (y * width) + x`
+ */
 export type World = {
 	width: number;
 	height: number;
@@ -23,6 +47,10 @@ export type World = {
 	tiles: Tile[];
 };
 
+/**
+ * The top-level game state. Everything the game cares about should be represented
+ * here so the state can be shared across logic and components.
+ */
 export type Game = {
 	running: boolean;
 	prev: DOMHighResTimeStamp;
@@ -31,11 +59,17 @@ export type Game = {
 	bug: Bug;
 };
 
+/**
+ * Get a random integer between zero (inclusive) and `max` (exclusive).
+ */
 function getRandomInt(max: number) {
 	return Math.floor(Math.random() * max);
 }
 
-export function NewGame(): Game {
+/**
+ * Generate and initialize a new Game object.
+ */
+export function newGame(): Game {
 	const tileOptions: Tile[] = ["grass", "sand", "water"];
 	const tiles: Tile[] = [];
 	for (let i = 0; i < 81; i++) {
@@ -68,6 +102,11 @@ export function NewGame(): Game {
 	return game;
 }
 
+/**
+ * Advance the current game state by `time` milliseconds. This function
+ * is pure and treats the game state as raw data: copying and returning
+ * a new version of it with each step.
+ */
 export function step(game: Game, time: DOMHighResTimeStamp): Game {
 	// Clone the game state for updating
 	const newGame = structuredClone(game);

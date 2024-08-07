@@ -1,11 +1,10 @@
-import { get, writable } from "svelte/store";
+import { writable } from "svelte/store";
 
-import { NewGame, step } from "./game";
+import { newGame } from "./game";
 
-export const GameState = writable(NewGame());
-
-export function update(time: DOMHighResTimeStamp) {
-	const currentState = get(GameState);
-	const newState = step(currentState, time);
-	GameState.set(newState);
-}
+/**
+ * This writable Svelte store holds the global game state. Both the
+ * render/update functions AND the UI modify this state and changes
+ * are reflected by any logic or component that references it.
+ */
+export const GameState = writable(newGame());
