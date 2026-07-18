@@ -12,26 +12,23 @@
 		"noUnusedLocals": true,
 		"strict": true,
 		"strictNullChecks": true,
-
 		// Modules
 		"module": "ES2020",
 		"moduleResolution": "Bundler",
-
+		"noUncheckedSideEffectImports": false,
 		// Emit
 		"noEmit": true,
-
+		// JavaScript Support
+		"allowJs": true,
 		// Interop Constraints
 		"esModuleInterop": true,
 		"isolatedModules": true,
 		"verbatimModuleSyntax": true,
-
 		// Language and Environment
 		"target": "ES2020",
-
 		// Output Formatting
 		"noErrorTruncation": true,
 		"pretty": true,
-
 		// Completeness
 		"skipLibCheck": true
 	}
